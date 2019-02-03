@@ -4,7 +4,7 @@ import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.DataFrame
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfter, Matchers}
+import org.scalatest.BeforeAndAfter
 
 @RunWith(classOf[JUnitRunner])
 class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
@@ -16,7 +16,7 @@ class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
 
   case class OutputRow(someColumnName: String, total: Integer)
 
-  test("test runner works") {
+  test("test runner works correctly") {
     val runner = new Runner(sqlContext) {
       //override read method to return an in memory data frame instead of actually reading from a hive table
       override def read(): DataFrame = sqlContext.createDataFrame(
@@ -41,7 +41,7 @@ class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
     resultDf.show(false)
     expectedDf.show(false)
 
-    //assertions
+    //assertions in following format
     assert(true)
   }
 }
