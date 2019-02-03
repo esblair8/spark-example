@@ -12,6 +12,9 @@ import org.apache.spark.{SparkConf, SparkContext}
   */
 object Example {
 
+  private val appName = "example"
+  private val master = "local[*]"
+
   /**
     * Main Entry point called by YARN or Spark Submit
     *
@@ -22,16 +25,13 @@ object Example {
       create a spark conf and set app name to something specific
       which in turn is used for creating a spark context and then an sqlContext (this is used to read hive managed tables)
      */
-    val sparkConf = new SparkConf().setAppName("example").setMaster("local[*]")
+    val sparkConf = new SparkConf().setAppName(appName).setMaster(master)
     val sparkContext = new SparkContext(sparkConf)
     val sqlContext = new HiveContext(sparkContext)
 
-    //run the spark app
     val result = new Runner(sqlContext).run()
-    //write results
     new Writer(sqlContext).writeToHdfs(result)
 
-    //stop spark context and application ends
     sparkContext.stop()
   }
 }

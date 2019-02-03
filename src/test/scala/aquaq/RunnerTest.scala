@@ -8,7 +8,10 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
 
-  val tableName = "tableName"
+  private val tableName = "tableName"
+
+  case class InputRow(someColumnName: String, otherColumn: String)
+  case class OutputRow(someColumnName: String, total: Integer)
 
   before {
     sqlContext.createDataFrame(
@@ -23,10 +26,6 @@ class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
   }
 
   after()
-
-  case class InputRow(someColumnName: String, otherColumn: String)
-
-  case class OutputRow(someColumnName: String, total: Integer)
 
   test("test runner works correctly") {
     val runner = new Runner(sqlContext)
@@ -43,7 +42,6 @@ class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
     resultDf.show(false)
     expectedDf.show(false)
 
-    //assertions in following format
     assert(true)
   }
 }
