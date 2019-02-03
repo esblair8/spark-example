@@ -22,7 +22,7 @@ class Runner(sqlContext: SQLContext) {
     aggregate(df)
   }
 
-  def read(): DataFrame = sqlContext.table("databaseName.tableName")
+  def read(): DataFrame = sqlContext.table("tableName")
 //    .filter(col("someColumnName") === "something else")
 
   def aggregate(dataFrame: DataFrame): DataFrame = dataFrame

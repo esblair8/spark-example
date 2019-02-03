@@ -1,15 +1,27 @@
 package aquaq
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.spark.sql.DataFrame
 import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.BeforeAndAfter
+import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
 
-  before()
+  val tableName = "tableName"
+
+  before {
+    sqlContext.createDataFrame(
+      Seq(
+        InputRow("foo", "foo"),
+        InputRow("foo", "foo"),
+        InputRow("foo", "foo"),
+        InputRow("bar", "bar"),
+        InputRow("bar", "bar"),
+        InputRow("baz", "baz"))
+    ).registerTempTable(tableName)
+  }
+
   after()
 
   case class InputRow(someColumnName: String, otherColumn: String)
@@ -17,17 +29,7 @@ class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
   case class OutputRow(someColumnName: String, total: Integer)
 
   test("test runner works correctly") {
-    val runner = new Runner(sqlContext) {
-      //override read method to return an in memory data frame instead of actually reading from a hive table
-      override def read(): DataFrame = sqlContext.createDataFrame(
-        Seq(
-          InputRow("foo", "foo"),
-          InputRow("foo", "foo"),
-          InputRow("foo", "foo"),
-          InputRow("bar", "bar"),
-          InputRow("bar", "bar"),
-          InputRow("baz", "baz")))
-    }
+    val runner = new Runner(sqlContext)
 
     val expectedDf = sqlContext.createDataFrame(
       Seq(
@@ -37,7 +39,7 @@ class RunnerTest extends DataFrameSuiteBase with BeforeAndAfter {
 
     val resultDf = runner.run()
 
-    // print data frames to console in pretty format
+    // print data frames to output in pretty format
     resultDf.show(false)
     expectedDf.show(false)
 
