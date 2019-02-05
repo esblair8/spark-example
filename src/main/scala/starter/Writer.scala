@@ -1,4 +1,4 @@
-package aquaq
+package starter
 
 import java.io.{FileOutputStream, OutputStreamWriter}
 

@@ -1,4 +1,4 @@
-package aquaq
+package starter
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.junit.runner.RunWith
