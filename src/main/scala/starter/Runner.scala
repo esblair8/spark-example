@@ -1,7 +1,7 @@
 package starter
 
 import org.apache.spark.sql.functions.col
-import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 /**
   * This runner can be newed up, mocked, unit tested etc using scala test and/or junit
@@ -10,9 +10,9 @@ import org.apache.spark.sql.{DataFrame, SQLContext}
   * Spark 2 has a slightly different syntax fro writing to csv
   * Spark 2.0 also has data sets whereas spark 1.6 has data frames
   *
-  * @param sqlContext - sqlContext to read from hadoop distributed file system
+  * @param SparkSession - spark session to read from hadoop distributed file system
   */
-class Runner(sqlContext: SQLContext) {
+class Runner(implicit spark: SparkSession) {
 
   private val tableName = "tableName"
   private val columnToGroupBy = "someColumnName"
@@ -22,11 +22,10 @@ class Runner(sqlContext: SQLContext) {
     aggregate(df)
   }
 
-  def read(): DataFrame = sqlContext.table(tableName)
+  def read(): DataFrame = spark.table(tableName)
   //    .filter(col("someColumnName") === "something else")
 
   def aggregate(dataFrame: DataFrame): DataFrame = dataFrame
     .groupBy(col(columnToGroupBy))
     .count
-
 }

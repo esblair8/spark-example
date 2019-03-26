@@ -1,7 +1,6 @@
 package starter
 
-import org.apache.spark.sql.hive.HiveContext
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.SparkSession
 
 /**
   * Example Spark Application
@@ -13,7 +12,6 @@ import org.apache.spark.{SparkConf, SparkContext}
 object Example {
 
   private val appName = "example"
-  private val master = "local[*]"
 
   /**
     * Main Entry point called by YARN or Spark Submit
@@ -21,17 +19,10 @@ object Example {
     * @param args - args from command line, yarn, oozie etc
     */
   def main(args: Array[String]) {
-    /*
-      create a spark conf and set app name to something specific
-      which in turn is used for creating a spark context and then an sqlContext (this is used to read hive managed tables)
-     */
-    val sparkConf = new SparkConf().setAppName(appName).setMaster(master)
-    val sparkContext = new SparkContext(sparkConf)
-    val sqlContext = new HiveContext(sparkContext)
 
-    val result = new Runner(sqlContext).run()
-    new Writer(sqlContext).writeToHdfs(result)
-
-    sparkContext.stop()
+    implicit val spark: SparkSession = SparkSessionWrapper.createSparkSession(appName)
+    val result = new Runner().run()
+    new Writer().writeToHdfsAsCsv(result)
+    spark.stop()
   }
 }
