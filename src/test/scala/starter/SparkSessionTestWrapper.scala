@@ -1,15 +1,14 @@
 package starter
 
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 trait SparkSessionTestWrapper {
 
   def initialiseTestSparkSession(name: String): SparkSession = {
     SparkSession
-      .builder()
+      .builder
       .master("local")
-      .appName("spark test session")
-      .getOrCreate()
+      .appName(name)
+      .getOrCreate
   }
-
 }
