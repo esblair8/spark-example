@@ -34,7 +34,7 @@ In practice we will also want to create generic reader and writer classes, test 
 
 ```
 spark-submit /
-	--aquaq.Example /
+	--spark-starter.Example /
 	--master yarn /
 	--deploy-mode client /
 	--executor-memory 1G /
