@@ -1,8 +1,8 @@
 # Example Spark Application
 
-This shows how to initialise a `SparkContext` and `HiveContext` (commonly called `sqlContext`) for reading and writing to Hive managed tables.
+This shows how to initialise SparkSession (formerly called `sqlContext` in Spark 1.6) for reading and writing to Hive managed tables.
 
-The example was upversioned from Spark 1.6 to 2.4
+The example was upversioned from Spark 1.6 to 2.4 in March 2019
 
 Build the jar with Maven and use the command at the bottom to run the example.
 
