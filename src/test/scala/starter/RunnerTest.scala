@@ -2,8 +2,8 @@ package starter
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import starter.runners.Runner
-import starter.utils.TestingBase
+import starter.runners.ExampleRunner
+import starter.testUtils.TestingBase
 
 @RunWith(classOf[JUnitRunner])
 class RunnerTest extends TestingBase {
@@ -40,7 +40,7 @@ class RunnerTest extends TestingBase {
     ).toDF()
 
     //run transformation
-    Runner()(spark).run()
+    ExampleRunner()(spark).run()
 
     val resultDf = spark.table(outputTableName)
 

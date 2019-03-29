@@ -5,8 +5,8 @@ import starter.io.input.SQLSourceReader
 import starter.io.output.SQLSourceWriter
 import starter.sources.input.InputSource
 import starter.sources.output.OutputSource
-import starter.traits.Runner
-import starter.transformations.{CountMapper, GroupByMapper}
+import starter.traits.{DataFrameMapper, Runner}
+import starter.transformations.CountMapper
 
 /**
   * Example Runner that
@@ -17,7 +17,7 @@ import starter.transformations.{CountMapper, GroupByMapper}
   * @param spark       - SparkSession
   */
 class ExampleRunner(reader: SQLSourceReader[SparkSession],
-                    countMapper: GroupByMapper[DataFrame],
+                    countMapper: DataFrameMapper[DataFrame, DataFrame],
                     writer: SQLSourceWriter)(implicit spark: SparkSession) extends Runner {
 
   /**
