@@ -1,10 +1,8 @@
 # Example Spark Application
 
-This shows how to initialise a `SparkContext` and `HiveContext` (commonly called `sqlContext`) for reading and writing to Hive managed tables.
+This shows how to initialise SparkSession (formerly called `sqlContext` in Spark 1.6) for reading and writing to Hive managed tables.
 
-The example uses Spark 1.6.
-
-If using Spark 2.0, the creation of contexts has moved to a `SparkSession` object, and the syntax for reading and writing csv's is slightly different.
+The example was upversioned from Spark 1.6 to 2.4 in March 2019
 
 Build the jar with Maven and use the command at the bottom to run the example.
 
@@ -17,15 +15,11 @@ Please install Hadoop for windows by cloning [this project](https://github.com/s
 
 Java 1.8 
 
-Scala IntelliJ plugin enabled - SDK 2.10.7.
-
-Maven
-
-We may want to update all versions to latest compatible versions at some stage, but this should be enough to get started with Spark 1.6
+Scala IntelliJ plugin enabled - SDK 2.11.8
 
 ### Testing
 
-For unit testing, the project uses Junit, [ScalaTest](http://www.scalatest.org/) and [Spark Testing Base](https://github.com/holdenk/spark-testing-base/wiki)
+For unit testing, the project uses Junit, [ScalaTest](http://www.scalatest.org/) and [spark-fast-tests](https://github.com/MrPowers/spark-fast-tests)
 
 In practice we will also want to create generic reader and writer classes, test these once and integrate into projects as needed.
 
@@ -34,7 +28,7 @@ In practice we will also want to create generic reader and writer classes, test 
 
 ```
 spark-submit /
-	--aquaq.Example /
+	--spark-starter.Example /
 	--master yarn /
 	--deploy-mode client /
 	--executor-memory 1G /
