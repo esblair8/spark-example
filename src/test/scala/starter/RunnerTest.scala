@@ -1,19 +1,17 @@
 package starter
 
-import com.github.mrpowers.spark.fast.tests.DataFrameComparer
-import org.apache.spark.sql.SparkSession
 import org.junit.runner.RunWith
-import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
+import starter.runners.Runner
+import starter.utils.TestingBase
 
 @RunWith(classOf[JUnitRunner])
-class RunnerTest extends FunSuite with SparkSessionTestWrapper with DataFrameComparer with BeforeAndAfter {
-
-  val spark: SparkSession = initialiseTestSparkSession(this.getClass.getSimpleName)
+class RunnerTest extends TestingBase {
 
   import spark.implicits._
 
-  private val tableName = "tableName"
+  private val inputTableName = "input_table"
+  private val outputTableName = "output_table"
 
   before {
     Seq(
@@ -23,13 +21,17 @@ class RunnerTest extends FunSuite with SparkSessionTestWrapper with DataFrameCom
       InputRow("bar", "bar"),
       InputRow("bar", "bar"),
       InputRow("baz", "baz")
-    ).toDF().createOrReplaceTempView(tableName)
+    ).toDF().createOrReplaceTempView(inputTableName)
+
+    createTable("/creat_input_table.hql")
   }
 
-  after()
+  after {
 
-  test("test runner works correctly") {
-    val runner = new Runner()(spark)
+    spark.sql(s"drop table $outputTableName")
+  }
+
+  test("e2e test runner works correctly") {
 
     val expectedDf = Seq(
       OutputRow("foo", 3),
@@ -37,7 +39,10 @@ class RunnerTest extends FunSuite with SparkSessionTestWrapper with DataFrameCom
       OutputRow("baz", 1)
     ).toDF()
 
-    val resultDf = runner.run()
+    //run transformation
+    Runner()(spark).run()
+
+    val resultDf = spark.table(outputTableName)
 
     // print data frames to output in pretty format
     resultDf.show(false)
@@ -49,7 +54,6 @@ class RunnerTest extends FunSuite with SparkSessionTestWrapper with DataFrameCom
       ignoreNullable = true,
       orderedComparison = false
     )
-
   }
 }
 
